@@ -1,11 +1,18 @@
-def combat_evaluation(player_power, enemy_defense):
-    advantage, disadvantage, evenly_matched = False, False, False
+def get_inventory():
+    return ["Healing Potion", "Leather Scraps", "Iron Helmet", "Shortsword"]
 
-    if player_power > enemy_defense:
-        advantage = True
-    elif player_power == enemy_defense:
-        evenly_matched = True
-    else:
-        disadvantage = True
 
-    return advantage, disadvantage, evenly_matched
+# Don't edit below this line
+
+
+def test():
+    inventory = get_inventory()
+    print(f"Inventory contains: {inventory}")
+    print("=====================================")
+
+
+def main():
+    test()
+
+
+main()

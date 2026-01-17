@@ -1,28 +1,30 @@
 from main import *
 
 run_cases = [
-    (101, 100, True, False, False),
-    (50, 100, False, True, False),
-    (100, 100, False, False, True),
+    (0, 10, 9, [9, 0]),
+    (0, 12, 20, [12, 8]),
+    (100, 100, 0, [100, 0]),
+    (1, 100, 80, [81, 0]),
 ]
 
 submit_cases = run_cases + [
-    (150, 70, True, False, False),
-    (80, 150, False, True, False),
-    (0, 0, False, False, True),
-    (1, 1, False, False, True),
-    (1000, 500, True, False, False),
-    (500, 1000, False, True, False),
+    (0, 0, 0, [0, 0]),
+    (1000, 1000, 5, [1000, 5]),
+    (0, 10, 5, [5, 0]),
+    (5, 2000, 500, [505, 0]),
 ]
 
 
-def test(input1, input2, expected_output1, expected_output2, expected_output3):
+def test(input1, input2, input3, expected):
     print("---------------------------------")
-    print(f"Inputs: {input1}, {input2}")
-    result = combat_evaluation(input1, input2)
-    print(f"Expected: {expected_output1}, {expected_output2}, {expected_output3}")
-    print(f"Actual:   {result}")
-    if result == (expected_output1, expected_output2, expected_output3):
+    print("Inputs:")
+    print(f" *           mana: {input1}")
+    print(f" *       max_mana: {input2}")
+    print(f" *    num_potions: {input3}")
+    result_mana, result_potions = meditate(input1, input2, input3)
+    print(f"Expected: mana {expected[0]}, potions {expected[1]}")
+    print(f"Actual:   mana {result_mana}, potions {result_potions}")
+    if result_mana == expected[0] and result_potions == expected[1]:
         print("Pass")
         return True
     print("Fail")
