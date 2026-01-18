@@ -1,30 +1,56 @@
 from main import *
 
 run_cases = [
-    (0, 10, 9, [9, 0]),
-    (0, 12, 20, [12, 8]),
-    (100, 100, 0, [100, 0]),
-    (1, 100, 80, [81, 0]),
+    (
+        ["darn it", "this dang thing won't work", "lets fight one on one"],
+        ["darn it", "this thing won't work", "lets fight one on one"],
+        [0, 1, 0],
+    ),
 ]
 
 submit_cases = run_cases + [
-    (0, 0, 0, [0, 0]),
-    (1000, 1000, 5, [1000, 5]),
-    (0, 10, 5, [5, 0]),
-    (5, 2000, 500, [505, 0]),
+    (
+        [
+            "well dang it",
+            "dang the whole dang thing",
+            "kill that knight, dang it",
+            "get him!",
+            "donkey kong",
+            "oh come on, get them",
+            "run away from the dang baddies",
+        ],
+        [
+            "well it",
+            "the whole thing",
+            "kill that knight, it",
+            "get him!",
+            "donkey kong",
+            "oh come on, get them",
+            "run away from the baddies",
+        ],
+        [1, 2, 1, 0, 0, 0, 1],
+    ),
 ]
 
 
-def test(input1, input2, input3, expected):
+def test(input, expected_output1, expected_output2):
     print("---------------------------------")
-    print("Inputs:")
-    print(f" *           mana: {input1}")
-    print(f" *       max_mana: {input2}")
-    print(f" *    num_potions: {input3}")
-    result_mana, result_potions = meditate(input1, input2, input3)
-    print(f"Expected: mana {expected[0]}, potions {expected[1]}")
-    print(f"Actual:   mana {result_mana}, potions {result_potions}")
-    if result_mana == expected[0] and result_potions == expected[1]:
+    print(f"Input:")
+    print(f" * messages: {input}")
+    print("Expected:")
+    print(f" * filtered messages: {expected_output1}")
+    print(f" * words removed: {expected_output2}")
+    print("Actual:")
+    try:
+        result = filter_messages(input)
+        print(f" * filtered messages: {result[0]}")
+        print(f" * words removed: {result[1]}")
+    except Exception as e:
+        print(f"Error: {e}")
+        print("Fail")
+        return False
+
+    if result == (expected_output1, expected_output2):
         print("Pass")
         return True
     print("Fail")
