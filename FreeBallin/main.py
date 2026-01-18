@@ -1,4 +1,14 @@
-def split_players_into_teams(players):
-    team_even = players[::2]
-    team_odd = players[1::2]
-    return team_even, team_odd
+def check_ingredient_match(recipe, inventory):
+    has = []
+    missing = []
+
+    for ingredient in recipe:
+        if ingredient in inventory:
+            has.append(ingredient)
+        else:
+            missing.append(ingredient)
+    
+    percentage = (len(has) /len(recipe)) * 100
+
+    return percentage, missing
+
