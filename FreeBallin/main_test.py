@@ -2,55 +2,54 @@ from main import *
 
 run_cases = [
     (
-        ["darn it", "this dang thing won't work", "lets fight one on one"],
-        ["darn it", "this thing won't work", "lets fight one on one"],
-        [0, 1, 0],
+        [
+            "Harry",
+            "Hermione",
+            "Ron",
+            "Ginny",
+            "Fred",
+            "Neville",
+            "Draco",
+            "Luna",
+            "Cho",
+            "Gregory",
+            "Lee",
+            "Michael",
+            "Lavender",
+            "Frank",
+            "Anthony",
+            "Allan",
+        ],
+        (
+            ["Harry", "Ron", "Fred", "Draco", "Cho", "Lee", "Lavender", "Anthony"],
+            [
+                "Hermione",
+                "Ginny",
+                "Neville",
+                "Luna",
+                "Gregory",
+                "Michael",
+                "Frank",
+                "Allan",
+            ],
+        ),
     ),
+    (["Mike", "Walter", "Skyler", "Tuco"], (["Mike", "Skyler"], ["Walter", "Tuco"])),
 ]
 
 submit_cases = run_cases + [
-    (
-        [
-            "well dang it",
-            "dang the whole dang thing",
-            "kill that knight, dang it",
-            "get him!",
-            "donkey kong",
-            "oh come on, get them",
-            "run away from the dang baddies",
-        ],
-        [
-            "well it",
-            "the whole thing",
-            "kill that knight, it",
-            "get him!",
-            "donkey kong",
-            "oh come on, get them",
-            "run away from the baddies",
-        ],
-        [1, 2, 1, 0, 0, 0, 1],
-    ),
+    (["Alice", "Bob", "Charlie", "David"], (["Alice", "Charlie"], ["Bob", "David"])),
+    ([], ([], [])),
 ]
 
 
-def test(input, expected_output1, expected_output2):
+def test(input1, expected_output):
     print("---------------------------------")
-    print(f"Input:")
-    print(f" * messages: {input}")
-    print("Expected:")
-    print(f" * filtered messages: {expected_output1}")
-    print(f" * words removed: {expected_output2}")
-    print("Actual:")
-    try:
-        result = filter_messages(input)
-        print(f" * filtered messages: {result[0]}")
-        print(f" * words removed: {result[1]}")
-    except Exception as e:
-        print(f"Error: {e}")
-        print("Fail")
-        return False
-
-    if result == (expected_output1, expected_output2):
+    print(f"Inputs: {input1}")
+    result = split_players_into_teams(input1)
+    print(f"Expected: {expected_output}")
+    print(f"Actual:   {result}")
+    if result == expected_output:
         print("Pass")
         return True
     print("Fail")
