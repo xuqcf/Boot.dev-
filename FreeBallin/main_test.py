@@ -1,128 +1,107 @@
-from main import *
+from typing import TypedDict
 
-run_cases = [
+from main import get_quest_status
+
+
+class CharacterProgress(TypedDict):
+    character_name: str
+    quests: dict[str, dict[str, str]]
+
+
+TestCase = tuple[CharacterProgress, str]
+
+run_cases: list[TestCase] = [
     (
-        [
-            "Mandrake Root",
-            "Griffin Feather",
-            "Elf Dust",
-            "Goblin Ear",
-        ],
-        [
-            "Elf Dust",
-            "Goblin Ear",
-        ],
-        (50.0, ["Mandrake Root", "Griffin Feather"]),
+        {
+            "character_name": "Sir Galahad",
+            "quests": {
+                "bridge_run": {
+                    "status": "In Progress",
+                },
+                "talk_to_syl": {
+                    "status": "Completed",
+                },
+            },
+        },
+        "In Progress",
     ),
     (
-        [
-            "Dragon Scale",
-            "Unicorn Hair",
-            "Phoenix Feather",
-            "Troll Tusk",
-            "Mandrake Root",
-            "Griffin Feather",
-            "Elf Dust",
-            "Goblin Ear",
-        ],
-        [
-            "Dragon Scale",
-            "Phoenix Feather",
-            "Mandrake Root",
-            "Griffin Feather",
-            "Elf Dust",
-            "Goblin Ear",
-        ],
-        (75.0, ["Unicorn Hair", "Troll Tusk"]),
+        {
+            "character_name": "Lady Gwen",
+            "quests": {
+                "bridge_run": {
+                    "status": "Completed",
+                },
+                "talk_to_syl": {
+                    "status": "In Progress",
+                },
+            },
+        },
+        "Completed",
     ),
 ]
 
-submit_cases = run_cases + [
+submit_cases: list[TestCase] = run_cases + [
     (
-        [
-            "Dragon Scale",
-            "Phoenix Feather",
-            "Troll Tusk",
-            "Mandrake Root",
-            "Griffin Feather",
-            "Elf Dust",
-            "Goblin Ear",
-            "Unicorn Hair",
-        ],
-        [
-            "Goblin Ear",
-            "Elf Dust",
-            "Griffin Feather",
-            "Mermaid Tear",
-            "Goblin Ear",
-            "Phoenix Feather",
-            "Troll Tusk",
-            "Unicorn Hair",
-        ],
-        (
-            75.0,
-            [
-                "Dragon Scale",
-                "Mandrake Root",
-            ],
-        ),
+        {
+            "character_name": "Archer Finn",
+            "quests": {
+                "bridge_run": {
+                    "status": "Not Started",
+                },
+                "talk_to_syl": {
+                    "status": "Completed",
+                },
+            },
+        },
+        "Not Started",
     ),
     (
-        [
-            "Orc Tears",
-            "Ogre Ear",
-            "Goblin Giggles",
-            "Witch Broom",
-            "Giant Toenail Clipping",
-            "Centipede Foot",
-            "Dog Hair",
-            "Bald Eagle Dandruff",
-        ],
-        [
-            "Unicorn Hair",
-            "Dragon Scale",
-            "Phoenix Feather",
-            "Troll Tusk",
-            "Griffin Feather",
-            "Mandrake Root",
-            "Goblin Ear",
-            "Bald Eagle Dandruff",
-        ],
-        (
-            12.5,
-            [
-                "Orc Tears",
-                "Ogre Ear",
-                "Goblin Giggles",
-                "Witch Broom",
-                "Giant Toenail Clipping",
-                "Centipede Foot",
-                "Dog Hair",
-            ],
-        ),
+        {
+            "character_name": "Mage Elara",
+            "quests": {
+                "bridge_run": {
+                    "status": "Failed",
+                },
+                "talk_to_syl": {
+                    "status": "Completed",
+                },
+            },
+        },
+        "Failed",
+    ),
+    (
+        {
+            "character_name": "Rogue Talon",
+            "quests": {
+                "bridge_run": {
+                    "status": "Completed",
+                },
+                "talk_to_syl": {
+                    "status": "Not Started",
+                },
+            },
+        },
+        "Completed",
     ),
 ]
 
 
-def test(input1, input2, expected_output):
+def test(progress: CharacterProgress, expected: str) -> bool:
     print("---------------------------------")
     print("Inputs:")
-    print(f" - Recipe: {input1}")
-    print(f" - Ingredients: {input2}")
-    print("")
-    result = check_ingredient_match(input1, input2)
-    print(f"Expected: {expected_output}")
+    print(f" * Progress Dictionary: {progress}")
+    print(f"Expected: {expected}")
+    result = get_quest_status(progress)
     print(f"Actual:   {result}")
-    if result[0] == expected_output[0] and sorted(result[1]) == sorted(
-        expected_output[1]
-    ):
+    if result == expected:
         print("Pass")
         return True
     print("Fail")
     return False
 
 
-def main():
+def main() -> None:
     passed = 0
     failed = 0
     skipped = len(submit_cases) - len(test_cases)
@@ -142,7 +121,7 @@ def main():
         print(f"{passed} passed, {failed} failed")
 
 
-test_cases = submit_cases
+test_cases: list[TestCase] = submit_cases
 if "__RUN__" in globals():
     test_cases = run_cases
 
