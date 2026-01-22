@@ -1,115 +1,58 @@
-from typing import TypedDict
+from main import *
 
-from main import get_quest_status
-
-
-class CharacterProgress(TypedDict):
-    character_name: str
-    quests: dict[str, dict[str, str]]
-
-
-TestCase = tuple[CharacterProgress, str]
-
-run_cases: list[TestCase] = [
-    (
-        {
-            "character_name": "Sir Galahad",
-            "quests": {
-                "bridge_run": {
-                    "status": "In Progress",
-                },
-                "talk_to_syl": {
-                    "status": "Completed",
-                },
-            },
-        },
-        "In Progress",
-    ),
-    (
-        {
-            "character_name": "Lady Gwen",
-            "quests": {
-                "bridge_run": {
-                    "status": "Completed",
-                },
-                "talk_to_syl": {
-                    "status": "In Progress",
-                },
-            },
-        },
-        "Completed",
-    ),
+run_cases = [
+    (0, 0, 5, "left", -5, 0),
+    (0, 0, 5, "right", 5, 0),
+    (0, 0, 5, "up", 0, 5),
 ]
 
-submit_cases: list[TestCase] = run_cases + [
-    (
-        {
-            "character_name": "Archer Finn",
-            "quests": {
-                "bridge_run": {
-                    "status": "Not Started",
-                },
-                "talk_to_syl": {
-                    "status": "Completed",
-                },
-            },
-        },
-        "Not Started",
-    ),
-    (
-        {
-            "character_name": "Mage Elara",
-            "quests": {
-                "bridge_run": {
-                    "status": "Failed",
-                },
-                "talk_to_syl": {
-                    "status": "Completed",
-                },
-            },
-        },
-        "Failed",
-    ),
-    (
-        {
-            "character_name": "Rogue Talon",
-            "quests": {
-                "bridge_run": {
-                    "status": "Completed",
-                },
-                "talk_to_syl": {
-                    "status": "Not Started",
-                },
-            },
-        },
-        "Completed",
-    ),
+submit_cases = run_cases + [
+    (0, 0, 5, "down", 0, -5),
+    (10, 10, 2, "left", 8, 10),
+    (10, 10, 2, "right", 12, 10),
+    (10, 10, 2, "up", 10, 12),
+    (10, 10, 2, "down", 10, 8),
 ]
 
 
-def test(progress: CharacterProgress, expected: str) -> bool:
+def test(pos_x, pos_y, speed, move_direction, expected_output_x, expected_output_y):
     print("---------------------------------")
-    print("Inputs:")
-    print(f" * Progress Dictionary: {progress}")
-    print(f"Expected: {expected}")
-    result = get_quest_status(progress)
-    print(f"Actual:   {result}")
-    if result == expected:
-        print("Pass")
+    print(f"Inputs:")
+    print(f" * pos_x: {pos_x}")
+    print(f" * pos_y: {pos_y}")
+    print(f" * speed: {speed}")
+    print(f" * move_direction: {move_direction}")
+    expected_output = (expected_output_x, expected_output_y)
+    human = Human(pos_x, pos_y, speed)
+    if move_direction == "left":
+        human.move_left()
+    elif move_direction == "right":
+        human.move_right()
+    elif move_direction == "up":
+        human.move_up()
+    elif move_direction == "down":
+        human.move_down()
+    result = human.get_position()
+    print(f"Expected x: {expected_output_x}")
+    print(f"Actual   x: {result[0]}")
+    print(f"Expected y: {expected_output_y}")
+    print(f"Actual   y: {result[1]}")
+    if result == expected_output:
         return True
-    print("Fail")
     return False
 
 
-def main() -> None:
+def main():
     passed = 0
     failed = 0
     skipped = len(submit_cases) - len(test_cases)
     for test_case in test_cases:
         correct = test(*test_case)
         if correct:
+            print("Pass")
             passed += 1
         else:
+            print("Fail")
             failed += 1
     if failed == 0:
         print("============= PASS ==============")
@@ -121,7 +64,7 @@ def main() -> None:
         print(f"{passed} passed, {failed} failed")
 
 
-test_cases: list[TestCase] = submit_cases
+test_cases = submit_cases
 if "__RUN__" in globals():
     test_cases = run_cases
 
