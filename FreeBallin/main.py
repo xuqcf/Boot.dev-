@@ -1,64 +1,32 @@
 class Human:
-    def sprint_right(self):
-        if self.__stamina <= 0:
-            self.__raise_if_cannot_sprint()
-        
-        self.__use_sprint_stamina()
-        self.move_right()
-        self.move_right()
+    def __init__(self, name):
+        self.__name = name
+
+    def get_name(self):
+        return self.__name
 
 
+## don't touch above this line
 
-    def sprint_left(self):
-        if self.__stamina <= 0:
-            self.__raise_if_cannot_sprint()
-        
-        self.__use_sprint_stamina()
-        self.move_left()
-        self.move_left()
 
-    def sprint_up(self):
-        if self.__stamina <= 0:
-            self.__raise_if_cannot_sprint()
-        
-        self.__use_sprint_stamina()
-        self.move_up()
-        self.move_up()
+class Archer(Human):
+    def __init__(self, name, num_arrows):
+        super().__init__(name)
+        self.__num_arrows = num_arrows
 
-    def sprint_down(self):
-        if self.__stamina <= 0:
-            self.__raise_if_cannot_sprint()
-        
-        self.__use_sprint_stamina()
-        self.move_down()
-        self.move_down()
+    def get_num_arrows(self):
+        return self.__num_arrows
 
-    def __raise_if_cannot_sprint(self):
-        if self.__stamina <= 0:
-            raise Exception(f"not enough stamina to sprint")
+    def use_arrows(self, num):
+        if self.__num_arrows < num:
+            raise Exception(f"not enough arrows")
+        self.__num_arrows -= num
 
-    def __use_sprint_stamina(self):
-        self.__stamina -= 1
 
-    # don't touch below this line
+class Crossbowman(Archer):
+    def __init__(self, name, num_arrows):
+        super().__init__(name, num_arrows)
 
-    def move_right(self):
-        self.__pos_x += self.__speed
-
-    def move_left(self):
-        self.__pos_x -= self.__speed
-
-    def move_up(self):
-        self.__pos_y += self.__speed
-
-    def move_down(self):
-        self.__pos_y -= self.__speed
-
-    def get_position(self):
-        return self.__pos_x, self.__pos_y
-
-    def __init__(self, pos_x, pos_y, speed, stamina):
-        self.__pos_x = pos_x
-        self.__pos_y = pos_y
-        self.__speed = speed
-        self.__stamina = stamina
+    def triple_shot(self, target):
+        self.use_arrows(3)
+        return f"{target.get_name()} was shot by 3 crossbow bolts"

@@ -1,67 +1,57 @@
 from main import *
 
 run_cases = [
-    ((0, 0, 5, 3), ["sprint_right"], (10, 0, None)),
-    (
-        (0, 0, 20, 3),
-        [
-            "sprint_left",
-            "sprint_left",
-            "sprint_left",
-        ],
-        (-120, 0, None),
-    ),
-    (
-        (1, 1, 3, 1),
-        ["sprint_down", "sprint_right"],
-        (1, -5, "not enough stamina to sprint"),
-    ),
+    ("Will", 1, "Darren", 4, None, 1),
+    ("Elena", 5, "Connor", 3, None, 0),
 ]
-
 
 submit_cases = run_cases + [
-    (
-        (1, 1, 5, 2),
-        ["sprint_left", "sprint_up", "sprint_down"],
-        (-9, 11, "not enough stamina to sprint"),
-    ),
+    ("Jake", 0, "Victor", 3, None, 0),
+    ("Ryan", 2, "Emma", 1, "not enough arrows", None),
+    ("Zoe", 10, "Lucas", 8, None, 5),
 ]
 
 
-def test(human_args, methods, expected_output):
+def test(
+    archer_name,
+    archer_arrows,
+    crossbowman_name,
+    crossbowman_bolts,
+    expected_exception,
+    expected_remaining_bolts,
+):
     print("---------------------------------")
-    print(f"Starting values:")
-    human = Human(*human_args)
-    print(f" * x: {human_args[0]}")
-    print(f" * y: {human_args[1]}")
-    print(f" * speed: {human_args[2]}")
-    print(f" * stamina: {human_args[3]}")
-    for method in methods:
-        print(f" - calling {method}...")
+    print(f"Archer: {archer_name}, Arrows: {archer_arrows}")
+    archer = Archer(archer_name, archer_arrows)
+    print(f"Crossbowman: {crossbowman_name}, Arrows: {crossbowman_bolts}")
+    print("")
+    crossbowman = Crossbowman(crossbowman_name, crossbowman_bolts)
     try:
-        for method in methods:
-            getattr(human, method)()
-        actual_x, actual_y = human.get_position()
-        actual_err = None
-    except Exception as e:
-        actual_x, actual_y = human.get_position()
-        actual_err = str(e)
-    expected_x, expected_y, expected_error = expected_output
-    print(f"Expected x: {expected_x}")
-    print(f"Actual   x: {actual_x}")
-    print(f"Expected y: {expected_y}")
-    print(f"Actual   y: {actual_y}")
-    print(f"Expected error: {expected_error}")
-    print(f"Actual   error: {actual_err}")
-    if (
-        actual_x == expected_x
-        and actual_y == expected_y
-        and actual_err == expected_error
-    ):
-        print("Pass")
+        expected_str = f"{archer_name} was shot by 3 crossbow bolts"
+        actual_str = crossbowman.triple_shot(archer)
+        if expected_exception:
+            print(
+                f"Expected exception '{expected_exception}', but no exception occurred"
+            )
+            return False
+        print(f"Expected triple_shot message: {expected_str}")
+        print(f"Actual triple_shot message:   {actual_str}")
+        if actual_str != expected_str:
+            return False
+
+        print(f"Expected remaining bolts: {expected_remaining_bolts}")
+        print(f"Actual remaining bolts:   {crossbowman.get_num_arrows()}")
+        if crossbowman.get_num_arrows() != expected_remaining_bolts:
+            return False
         return True
-    print("Fail")
-    return False
+    except Exception as e:
+        if str(e) == expected_exception:
+            print(f"Expected exception: {expected_exception}")
+            print(f"Actual exception:   {e}")
+            return True
+        else:
+            print(f"Unexpected exception: {e}")
+            return False
 
 
 def main():
@@ -71,8 +61,10 @@ def main():
     for test_case in test_cases:
         correct = test(*test_case)
         if correct:
+            print("Pass")
             passed += 1
         else:
+            print("Fail")
             failed += 1
     if failed == 0:
         print("============= PASS ==============")
