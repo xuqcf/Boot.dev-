@@ -1,56 +1,49 @@
 from main import *
 
 run_cases = [
-    ("Will", 1, "Darren", 4, None, 1),
-    ("Elena", 5, "Connor", 3, None, 0),
+    (("Hercules", 200), ("Pericles", 100, 2), 190),
+    (("Zeus", 1000), ("Hades", 900, 1), None, "not enough arrows", True),
+    (("Aquiles", 150), ("Aneas", 80, 1), 140),
 ]
 
 submit_cases = run_cases + [
-    ("Jake", 0, "Victor", 3, None, 0),
-    ("Ryan", 2, "Emma", 1, "not enough arrows", None),
-    ("Zoe", 10, "Lucas", 8, None, 5),
+    (("Hecate", 300), ("Ares", 50, 0), None, "not enough arrows", True),
+    (("Icarus", 60), ("Daedalus", 40, 2), 40, None, True),
 ]
 
 
-def test(
-    archer_name,
-    archer_arrows,
-    crossbowman_name,
-    crossbowman_bolts,
-    expected_exception,
-    expected_remaining_bolts,
-):
+def test(hero_args, archer_args, expected_result, expected_err=None, twice=False):
+    hero = Hero(*hero_args)
+    archer = Archer(*archer_args)
+
     print("---------------------------------")
-    print(f"Archer: {archer_name}, Arrows: {archer_arrows}")
-    archer = Archer(archer_name, archer_arrows)
-    print(f"Crossbowman: {crossbowman_name}, Arrows: {crossbowman_bolts}")
+    print(f"Hero:   {hero.get_name()}, Health: {hero.get_health()}")
+    print(f"Archer: {archer.get_name()}, Arrows: {archer_args[2]}")
     print("")
-    crossbowman = Crossbowman(crossbowman_name, crossbowman_bolts)
     try:
-        expected_str = f"{archer_name} was shot by 3 crossbow bolts"
-        actual_str = crossbowman.triple_shot(archer)
-        if expected_exception:
-            print(
-                f"Expected exception '{expected_exception}', but no exception occurred"
-            )
-            return False
-        print(f"Expected triple_shot message: {expected_str}")
-        print(f"Actual triple_shot message:   {actual_str}")
-        if actual_str != expected_str:
+        print(f"{archer.get_name()} tries to shoot {hero.get_name()}")
+        archer.shoot(hero)
+        if twice:
+            print(f"{archer.get_name()} tries to shoot {hero.get_name()} again")
+            archer.shoot(hero)
+        result = hero.get_health()
+
+        if expected_err:
+            print(f"Expected exception: {expected_err}")
+            print("Actual exception:   None")
             return False
 
-        print(f"Expected remaining bolts: {expected_remaining_bolts}")
-        print(f"Actual remaining bolts:   {crossbowman.get_num_arrows()}")
-        if crossbowman.get_num_arrows() != expected_remaining_bolts:
-            return False
-        return True
+        print(f"Expected {hero.get_name()} health: {expected_result}")
+        print(f"Actual   {hero.get_name()} health: {result}")
+        if result == expected_result:
+            return True
+        return False
     except Exception as e:
-        if str(e) == expected_exception:
-            print(f"Expected exception: {expected_exception}")
-            print(f"Actual exception:   {e}")
+        print(f"Expected Exception: {expected_err}")
+        print(f"Actual Exception:   {e}")
+        if str(e) == expected_err:
             return True
         else:
-            print(f"Unexpected exception: {e}")
             return False
 
 

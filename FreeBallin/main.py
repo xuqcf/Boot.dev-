@@ -1,32 +1,29 @@
-class Human:
-    def __init__(self, name):
+class Hero:
+    def __init__(self, name, health):
         self.__name = name
+        self.__health = health
 
     def get_name(self):
         return self.__name
 
+    def get_health(self):
+        return self.__health
 
-## don't touch above this line
+    def take_damage(self, damage):
+        self.__health -= damage
 
 
-class Archer(Human):
-    def __init__(self, name, num_arrows):
-        super().__init__(name)
+# don't touch above this line
+
+
+class Archer(Hero):
+    def __init__(self, name, health, num_arrows):
+        super().__init__(name, health)
         self.__num_arrows = num_arrows
 
-    def get_num_arrows(self):
-        return self.__num_arrows
-
-    def use_arrows(self, num):
-        if self.__num_arrows < num:
+    def shoot(self, target):
+        if self.__num_arrows <= 0:
             raise Exception(f"not enough arrows")
-        self.__num_arrows -= num
-
-
-class Crossbowman(Archer):
-    def __init__(self, name, num_arrows):
-        super().__init__(name, num_arrows)
-
-    def triple_shot(self, target):
-        self.use_arrows(3)
-        return f"{target.get_name()} was shot by 3 crossbow bolts"
+        else: 
+            self.__num_arrows -= 1
+            target.take_damage(10)
