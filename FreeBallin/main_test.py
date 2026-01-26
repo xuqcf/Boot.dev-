@@ -1,40 +1,32 @@
 from main import *
 
 run_cases = [
-    (Sword("bronze"), Sword("bronze"), "iron", None),
-    (Sword("bronze"), Sword("iron"), None, "cannot craft"),
+    (("Smaug", "red"), "I am Smaug, the red dragon"),
+    (("Saphira", "blue"), "I am Saphira, the blue dragon"),
 ]
 
 submit_cases = run_cases + [
-    (Sword("steel"), Sword("steel"), None, "cannot craft"),
-    (Sword("iron"), Sword("iron"), "steel", None),
-    (Sword("bronze"), Sword("steel"), None, "cannot craft"),
+    (("Eldrazi", "colorless"), "I am Eldrazi, the colorless dragon"),
+    (("Glaurung", "gold"), "I am Glaurung, the gold dragon"),
+    (("Fafnir", "green"), "I am Fafnir, the green dragon"),
 ]
 
 
-def test(sword1, sword2, expected_result, expected_err):
+def test(args, expected_output):
     try:
         print("---------------------------------")
-        print(f"{sword1.sword_type} sword + {sword2.sword_type} sword...")
-        result = sword1 + sword2
-
-        if expected_err:
-            print(f"Expected Exception: {expected_err}")
-            print("Actual Exception:    None")
-            return False
-
-        print(f"Expected: {expected_result}")
-        print(f"Actual:   {result.sword_type}")
-        if result.sword_type != expected_result:
-            return False
-
+        print(f"Name: {args[0]}, Color: {args[1]}")
+        print("")
+        print(f"Expected: {expected_output}")
+        dragon = Dragon(*args)
+        result = str(dragon)
+        print(f"Actual:   {result}")
+        if result == expected_output:
+            return True
+        return False
     except Exception as e:
-        print(f"Expected Exception: {expected_err}")
-        print(f"Actual Exception:   {e}")
-        if expected_err != str(e):
-            return False
-
-    return True
+        print(f"Error: {e}")
+        return False
 
 
 def main():
@@ -44,8 +36,10 @@ def main():
     for test_case in test_cases:
         correct = test(*test_case)
         if correct:
+            print("Pass")
             passed += 1
         else:
+            print("Fail")
             failed += 1
     if failed == 0:
         print("============= PASS ==============")
