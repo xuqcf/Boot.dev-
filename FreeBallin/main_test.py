@@ -1,32 +1,51 @@
 from main import *
 
+SUITS = ["Clubs", "Diamonds", "Hearts", "Spades"]
+
+RANKS = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace"]
+
 run_cases = [
-    (("Smaug", "red"), "I am Smaug, the red dragon"),
-    (("Saphira", "blue"), "I am Saphira, the blue dragon"),
+    ("Ace", "Hearts", "Queen", "Hearts", False, True),
+    ("2", "Spades", "2", "Hearts", False, True),
 ]
 
 submit_cases = run_cases + [
-    (("Eldrazi", "colorless"), "I am Eldrazi, the colorless dragon"),
-    (("Glaurung", "gold"), "I am Glaurung, the gold dragon"),
-    (("Fafnir", "green"), "I am Fafnir, the green dragon"),
+    ("Ace", "Spades", "Ace", "Spades", True, False),
+    ("3", "Diamonds", "7", "Clubs", False, False),
+    ("King", "Clubs", "King", "Hearts", False, False),
+    ("Queen", "Diamonds", "Jack", "Spades", False, True),
+    ("10", "Hearts", "10", "Hearts", True, False),
 ]
 
 
-def test(args, expected_output):
-    try:
-        print("---------------------------------")
-        print(f"Name: {args[0]}, Color: {args[1]}")
-        print("")
-        print(f"Expected: {expected_output}")
-        dragon = Dragon(*args)
-        result = str(dragon)
-        print(f"Actual:   {result}")
-        if result == expected_output:
-            return True
+def test(rank_1, suit_1, rank_2, suit_2, expected_eq, expected_gt):
+    print("---------------------------------")
+    print(f"Inputs: {rank_1} of {suit_1}, {rank_2} of {suit_2}")
+    print("Expected:")
+    print(f" * Equal: {expected_eq}")
+    print(f" * Greater than: {expected_gt}")
+    print(f" * Less than: {not (expected_eq or expected_gt)}")
+
+    card_1 = Card(rank_1, suit_1)
+    card_2 = Card(rank_2, suit_2)
+    result_eq = card_1 == card_2
+    result_gt = card_1 > card_2
+    result_lt = card_1 < card_2
+    print("Actual:")
+    print(f" * Equal: {result_eq}")
+    if result_eq != expected_eq:
+        print("Fail")
         return False
-    except Exception as e:
-        print(f"Error: {e}")
+    print(f" * Greater than: {result_gt}")
+    if result_gt != expected_gt:
+        print("Fail")
         return False
+    print(f" * Less than: {result_lt}")
+    if result_lt != (not (expected_eq or expected_gt)):
+        print("Fail")
+        return False
+    print("Pass")
+    return True
 
 
 def main():
@@ -36,10 +55,8 @@ def main():
     for test_case in test_cases:
         correct = test(*test_case)
         if correct:
-            print("Pass")
             passed += 1
         else:
-            print("Fail")
             failed += 1
     if failed == 0:
         print("============= PASS ==============")
