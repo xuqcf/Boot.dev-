@@ -1,36 +1,40 @@
 from main import *
 
 run_cases = [
-    (Rectangle(0, 0, 4, 4), Rectangle(3, 3, 6, 6), True),
-    (Rectangle(0, 0, 4, 4), Rectangle(5, 5, 8, 8), False),
+    (Sword("bronze"), Sword("bronze"), "iron", None),
+    (Sword("bronze"), Sword("iron"), None, "cannot craft"),
 ]
 
 submit_cases = run_cases + [
-    (Rectangle(0, 0, 1, 1), Rectangle(4, 4, 5, 5), False),
-    (Rectangle(1, 1, 4, 4), Rectangle(2, 2, 3, 3), True),
-    (Rectangle(1, 1, 2, 2), Rectangle(0, 0, 4, 4), True),
-    (Rectangle(1, 1, 4, 4), Rectangle(1, 1, 4, 4), True),
-    (Rectangle(0, 0, 4, 1), Rectangle(1, 2, 3, 3), False),
+    (Sword("steel"), Sword("steel"), None, "cannot craft"),
+    (Sword("iron"), Sword("iron"), "steel", None),
+    (Sword("bronze"), Sword("steel"), None, "cannot craft"),
 ]
 
 
-def test(rect1, rect2, expected_overlap):
-    print("---------------------------------")
-    print(f"Checking overlap of:")
-    print(f" - {rect1}")
-    print(f" - {rect2}")
-    print("")
-    print(f"Expected overlap: {expected_overlap}")
+def test(sword1, sword2, expected_result, expected_err):
+    try:
+        print("---------------------------------")
+        print(f"{sword1.sword_type} sword + {sword2.sword_type} sword...")
+        result = sword1 + sword2
 
-    result = rect1.overlaps(rect2)
-    print(f"Actual overlap:   {result}")
+        if expected_err:
+            print(f"Expected Exception: {expected_err}")
+            print("Actual Exception:    None")
+            return False
 
-    if result == expected_overlap:
-        print("Pass")
-        return True
-    else:
-        print("Fail")
-        return False
+        print(f"Expected: {expected_result}")
+        print(f"Actual:   {result.sword_type}")
+        if result.sword_type != expected_result:
+            return False
+
+    except Exception as e:
+        print(f"Expected Exception: {expected_err}")
+        print(f"Actual Exception:   {e}")
+        if expected_err != str(e):
+            return False
+
+    return True
 
 
 def main():
