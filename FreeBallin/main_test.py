@@ -1,51 +1,48 @@
 from main import *
 
-SUITS = ["Clubs", "Diamonds", "Hearts", "Spades"]
-
-RANKS = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace"]
-
 run_cases = [
-    ("Ace", "Hearts", "Queen", "Hearts", False, True),
-    ("2", "Spades", "2", "Hearts", False, True),
+    (
+        """The Importance of FP
+Learn how functional programming can change the way you think about code.
+Benefits include immutability, simplicity, and composability.""",
+        """          The Importance of FP          
+****************************************
+Learn how functional programming can change the way you think about code.
+Benefits include immutability, simplicity, and composability.""",
+    ),
 ]
 
 submit_cases = run_cases + [
-    ("Ace", "Spades", "Ace", "Spades", True, False),
-    ("3", "Diamonds", "7", "Clubs", False, False),
-    ("King", "Clubs", "King", "Hearts", False, False),
-    ("Queen", "Diamonds", "Jack", "Spades", False, True),
-    ("10", "Hearts", "10", "Hearts", True, False),
+    (
+        """Short Title
+Equally short story""",
+        """              Short Title               \n****************************************
+Equally short story""",
+    ),
+    (
+        """DocToDoc: A Guide
+Understanding the art of document conversion.
+We write cool functional code to make it happen.""",
+        """           DocToDoc: A Guide            
+****************************************
+Understanding the art of document conversion.
+We write cool functional code to make it happen.""",
+    ),
 ]
 
 
-def test(rank_1, suit_1, rank_2, suit_2, expected_eq, expected_gt):
+def test(input1, expected_output):
     print("---------------------------------")
-    print(f"Inputs: {rank_1} of {suit_1}, {rank_2} of {suit_2}")
-    print("Expected:")
-    print(f" * Equal: {expected_eq}")
-    print(f" * Greater than: {expected_gt}")
-    print(f" * Less than: {not (expected_eq or expected_gt)}")
-
-    card_1 = Card(rank_1, suit_1)
-    card_2 = Card(rank_2, suit_2)
-    result_eq = card_1 == card_2
-    result_gt = card_1 > card_2
-    result_lt = card_1 < card_2
-    print("Actual:")
-    print(f" * Equal: {result_eq}")
-    if result_eq != expected_eq:
-        print("Fail")
-        return False
-    print(f" * Greater than: {result_gt}")
-    if result_gt != expected_gt:
-        print("Fail")
-        return False
-    print(f" * Less than: {result_lt}")
-    if result_lt != (not (expected_eq or expected_gt)):
-        print("Fail")
-        return False
-    print("Pass")
-    return True
+    print(f"Inputs:")
+    print(f" * document: {input1}\n")
+    print(f"Expected:\n{expected_output}\n")
+    result = stylize_title(input1)
+    print(f"Actual:\n{result}\n")
+    if result == expected_output:
+        print("Pass")
+        return True
+    print("Fail")
+    return False
 
 
 def main():

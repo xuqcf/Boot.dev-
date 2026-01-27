@@ -1,32 +1,17 @@
-SUITS = ["Clubs", "Diamonds", "Hearts", "Spades"]
+def stylize_title(document):
+    return add_border(center_title(document))
 
-RANKS = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace"]
+# Don't touch below this line
 
 
-class Card:
-    def __init__(self, rank, suit):
-        self.rank = rank
-        self.suit = suit
-        self.rank_index = RANKS.index(rank)
-        self.suit_index = SUITS.index(suit)
+def center_title(document):
+    width = 40
+    title = document.split("\n")[0]
+    centered_title = title.center(width)
+    return document.replace(title, centered_title)
 
-    def __eq__(self, other):
-        return (
-            self.rank_index == other.rank_index and
-            self.suit_index == other.suit_index 
 
-        )
-
-    def __lt__(self, other):
-        if self.rank_index != other.rank_index:
-            return self.rank_index < other.rank_index
-        return self.suit_index < other.suit_index
-
-    def __gt__(self, other):
-        if self.rank_index != other.rank_index:
-            return self.rank_index > other.rank_index
-        return self.suit_index > other.suit_index
-    # don't touch below this line
-
-    def __str__(self):
-        return f"{self.rank} of {self.suit}"
+def add_border(document):
+    title = document.split("\n")[0]
+    border = "*" * len(title)
+    return document.replace(title, title + "\n" + border)
