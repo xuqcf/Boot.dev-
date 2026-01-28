@@ -1,4 +1,5 @@
-def add_prefix(document, documents):
-    prefix = f"{len(documents)}. "
-    new_doc = prefix + document
-    return documents + (new_doc,)
+def choose_parser(file_extension):
+    if file_extension.lower() in ("markdown", "md"):
+        return "markdown"
+    else:
+        return "plaintext"
