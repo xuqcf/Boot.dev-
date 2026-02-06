@@ -1,58 +1,24 @@
 from main import *
 
-
-def to_string(file):
-    return (
-        f"File: {file['filename']}\n"
-        f"Author: {file['author_first_name']} {file['author_last_name']}\n"
-        f"Content: {file['content']}"
-    )
-
-
 run_cases = [
-    (
-        {
-            "filename": "essay.txt",
-            "content": "Dear Mr. Vernon, we accept the fact that we had to sacrifice a whole Saturday in detention for whatever it was we did wrong...",
-            "author_first_name": "Brian",
-            "author_last_name": "Johnson",
-        },
-        "```\nFile: essay.txt\nAuthor: Brian Johnson\nContent: Dear Mr. Vernon, we accept the fact that we had to sacrifice a whole Saturday in detention for whatever it was we did wrong...\n```",
-    ),
-    (
-        {
-            "filename": "letter.txt",
-            "content": "But we think you're crazy to make us write an essay telling you who we think we are.",
-            "author_first_name": "Brian",
-            "author_last_name": "Johnson",
-        },
-        "```\nFile: letter.txt\nAuthor: Brian Johnson\nContent: But we think you're crazy to make us write an essay telling you who we think we are.\n```",
-    ),
+    (3, 6),
+    (5, 120),
+    (0, 1),
 ]
 
 submit_cases = run_cases + [
-    (
-        {
-            "filename": "note.txt",
-            "content": "Does Barry Manilow know that you raid his wardrobe?",
-            "author_first_name": "John",
-            "author_last_name": "Bender",
-        },
-        "```\nFile: note.txt\nAuthor: John Bender\nContent: Does Barry Manilow know that you raid his wardrobe?\n```",
-    ),
+    (1, 1),
+    (2, 2),
+    (10, 3628800),
 ]
 
 
 def test(input1, expected_output):
     print("---------------------------------")
-    print("Inputs:")
-    print(f"  filename: {input1['filename']}")
-    print(f"  content: {input1['content'][:30]}...")  # Truncate for display
-    print(f"  author_first_name: {input1['author_first_name']}")
-    print(f"  author_last_name: {input1['author_last_name']}")
-    print(f"Expected:\n{expected_output}")
-    result = file_to_prompt(input1, to_string)
-    print(f"Actual:\n{result}")
+    print(f"Inputs: {input1}")
+    print(f"Expected: {expected_output}")
+    result = factorial_r(input1)
+    print(f"Actual:   {result}")
     if result == expected_output:
         print("Pass")
         return True
