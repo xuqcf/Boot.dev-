@@ -1,8 +1,12 @@
-def zipmap(keys, values):
-    if not keys or not values:
-        return {}
+def sum_nested_list(lst):
+    total = 0
 
-    result = zipmap(keys[1:], values[1:])
+    for item in lst:
+        if isinstance(item, int):
+            total += item
 
-    result[keys[0]] = values[0]
-    return result
+        if isinstance(item, list):
+            total += sum_nested_list(item)
+    
+    return total
+
