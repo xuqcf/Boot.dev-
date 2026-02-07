@@ -1,14 +1,42 @@
-def count_nested_levels(nested_documents, target_document_id, level=1):
-    
-    for document_id, children in nested_documents.items():
-        
-        if document_id == target_document_id:
-            return level
-        
-        result = count_nested_levels(children, target_document_id, level + 1)
+def get_logger(formatter):
+    def logger(first, second):
+        print(formatter(first, second))
+    return logger
 
-        if result != -1:
-            return result
-        
-    return -1
 
+# Don't edit below this line
+
+
+def test(first, errors, formatter):
+    print("Logs:")
+    logger = get_logger(formatter)
+    for err in errors:
+        logger(first, err)
+    print("====================================")
+
+
+def colon_delimit(first, second):
+    return f"{first}: {second}"
+
+
+def dash_delimit(first, second):
+    return f"{first} - {second}"
+
+
+def main():
+    db_errors = [
+        "out of memory",
+        "cpu is pegged",
+        "networking issue",
+        "invalid syntax",
+    ]
+    test("Doc2Doc FATAL", db_errors, colon_delimit)
+
+    mail_errors = [
+        "email too large",
+        "non alphanumeric symbols found",
+    ]
+    test("Doc2Doc WARNING", mail_errors, dash_delimit)
+
+
+main()
