@@ -1,13 +1,10 @@
-def word_count_aggregator():
-    count = 0
-    def calculate(doc):
+def new_collection(initial_docs):
+    copy = initial_docs.copy()
 
-        nonlocal count
-        words = doc.split()
-        count += len(words)
+    def add_doc(doc):
 
-        return count
+        nonlocal copy
+        copy.append(doc)
+        return copy
 
-
-    return calculate
-
+    return add_doc
