@@ -1,14 +1,19 @@
-def list_files(parent_directory, current_filepath=""):
-    if parent_directory == None:
-        return []
-    
-    paths = []
-    for key in parent_directory:
-        new_filepath = current_filepath + "/" + key
+def find_longest_word(document, longest_word=""):
+    if not document or not document.strip():
+        return longest_word
 
-        if parent_directory[key] is None:
-            paths.append(new_filepath)
-        else:
-            paths.extend(list_files(parent_directory[key], new_filepath))
+    parts = document.split(maxsplit=1)
+    first_word = parts[0]
 
-    return paths
+    if len(parts) > 1:
+        rest = parts[1]
+    else:
+        rest = ""
+
+    if len(first_word) > len(longest_word):
+        longest_word = first_word
+
+    if rest:
+        return find_longest_word(rest, longest_word)
+    else:
+        return longest_word
