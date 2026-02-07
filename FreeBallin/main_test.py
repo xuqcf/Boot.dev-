@@ -1,48 +1,84 @@
 from main import *
+import copy
 
 
 run_cases = [
-    (["Dan Evans"], ["Charlie Prince"], ["Dan Evans", "Charlie Prince"]),
     (
-        ["Dan Evans", "Ben Wade"],
-        ["Alice Evans"],
-        ["Dan Evans", "Ben Wade", "Alice Evans"],
-    ),
-    (
-        ["Dan Evans", "Ben Wade", "Alice Evans"],
-        ["Doc Potter", "Butterfield"],
-        ["Dan Evans", "Ben Wade", "Alice Evans", "Doc Potter", "Butterfield"],
+        {
+            "h1": {
+                "color": "yellow",
+            },
+            "body": {
+                "background-color": "black",
+                "color": "white",
+            },
+        },
+        [
+            ("h1", "color", "#CC00FF"),
+            ("body", "background-color", "#696969"),
+        ],
+        {
+            "h1": {
+                "color": "#CC00FF",
+            },
+            "body": {
+                "background-color": "#696969",
+                "color": "white",
+            },
+        },
     ),
 ]
+
 
 submit_cases = run_cases + [
     (
-        ["Dan Evans", "Ben Wade", "Alice Evans"],
-        [],
-        ["Dan Evans", "Ben Wade", "Alice Evans"],
+        {},
+        [
+            ("p", "font-size", "16px"),
+        ],
+        {
+            "p": {
+                "font-size": "16px",
+            },
+        },
     ),
-    ([], ["William Evans"], ["William Evans"]),
     (
-        ["Dan Evans", "Ben Wade"],
-        ["Charlie Prince", "Butterfield"],
-        ["Dan Evans", "Ben Wade", "Charlie Prince", "Butterfield"],
+        {
+            ".container": {
+                "max-width": "1200px",
+                "margin": "0 auto",
+                "padding": "0 20px",
+            },
+        },
+        [
+            (".container", "max-width", "1450px"),
+            (".container", "color", "#660099"),
+        ],
+        {
+            ".container": {
+                "max-width": "1450px",
+                "margin": "0 auto",
+                "padding": "0 20px",
+                "color": "#660099",
+            },
+        },
     ),
 ]
 
 
-def test(initial_docs, docs_to_add, expected_output):
+def test(initial_styles, styles_to_add, expected_output):
     print("---------------------------------")
-    print(f"Initial documents: {initial_docs}")
-    print(f"Documents to add: {docs_to_add}")
+    print(f"Initial styles: {initial_styles}")
+    initial_styles_copy = copy.deepcopy(initial_styles)
+    add_style = css_styles(initial_styles)
+    result = initial_styles.copy()
+    for style in styles_to_add:
+        print(f"Style to add: {style}")
+        result = add_style(*style)
     print(f"Expected: {expected_output}")
-    copy_of_initial_docs = initial_docs.copy()
-    add_doc = new_collection(initial_docs)
-    result = initial_docs.copy()
-    for doc in docs_to_add:
-        result = add_doc(doc)
     print(f"Actual:   {result}")
-    if copy_of_initial_docs != initial_docs:
-        print("Fail: You should not modify the initial list")
+    if initial_styles_copy != initial_styles:
+        print("Fail: You should not modify the initial styles")
         return False
     if result != expected_output:
         print("Fail: Unexpected result")
