@@ -1,42 +1,22 @@
-def get_logger(formatter):
-    def logger(first, second):
-        print(formatter(first, second))
-    return logger
+def doc_format_checker_and_converter(conversion_function, valid_formats):
+    def new(filename, content):
+        split = filename.split(".")
+        ext = split[-1]
 
+
+        if ext in valid_formats:
+            conversion_function(content) 
+        else:
+            raise ValueError("Invalid file format")
+    
+    return new
 
 # Don't edit below this line
 
 
-def test(first, errors, formatter):
-    print("Logs:")
-    logger = get_logger(formatter)
-    for err in errors:
-        logger(first, err)
-    print("====================================")
+def capitalize_content(content):
+    return content.upper()
 
 
-def colon_delimit(first, second):
-    return f"{first}: {second}"
-
-
-def dash_delimit(first, second):
-    return f"{first} - {second}"
-
-
-def main():
-    db_errors = [
-        "out of memory",
-        "cpu is pegged",
-        "networking issue",
-        "invalid syntax",
-    ]
-    test("Doc2Doc FATAL", db_errors, colon_delimit)
-
-    mail_errors = [
-        "email too large",
-        "non alphanumeric symbols found",
-    ]
-    test("Doc2Doc WARNING", mail_errors, dash_delimit)
-
-
-main()
+def reverse_content(content):
+    return content[::-1]
