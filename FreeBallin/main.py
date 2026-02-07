@@ -1,19 +1,14 @@
-def find_longest_word(document, longest_word=""):
-    if not document or not document.strip():
-        return longest_word
+def count_nested_levels(nested_documents, target_document_id, level=1):
+    
+    for document_id, children in nested_documents.items():
+        
+        if document_id == target_document_id:
+            return level
+        
+        result = count_nested_levels(children, target_document_id, level + 1)
 
-    parts = document.split(maxsplit=1)
-    first_word = parts[0]
+        if result != -1:
+            return result
+        
+    return -1
 
-    if len(parts) > 1:
-        rest = parts[1]
-    else:
-        rest = ""
-
-    if len(first_word) > len(longest_word):
-        longest_word = first_word
-
-    if rest:
-        return find_longest_word(rest, longest_word)
-    else:
-        return longest_word
