@@ -1,22 +1,26 @@
-def doc_format_checker_and_converter(conversion_function, valid_formats):
-    def new(filename, content):
-        split = filename.split(".")
-        ext = split[-1]
-
-
-        if ext in valid_formats:
-            conversion_function(content) 
+def get_filter_cmd(filter_one, filter_two):
+    def filter_cmd(content, option="--one"):
+        if option == "--one":
+            return filter_one(content)
+        elif option == "--two":
+            return filter_two(content)
+        elif option == "--three":
+            return filter_two(filter_one(content) )
         else:
-            raise ValueError("Invalid file format")
-    
-    return new
-
-# Don't edit below this line
+            raise Exception("invalid option")
+    return filter_cmd
 
 
-def capitalize_content(content):
-    return content.upper()
+# don't touch below this line
 
 
-def reverse_content(content):
-    return content[::-1]
+def replace_bad(text):
+    return text.replace("bad", "good")
+
+
+def replace_ellipsis(text):
+    return text.replace("..", "...")
+
+
+def fix_ellipsis(text):
+    return text.replace("....", "...")
