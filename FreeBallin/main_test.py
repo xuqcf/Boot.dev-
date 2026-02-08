@@ -1,90 +1,33 @@
 from main import *
-import copy
-
 
 run_cases = [
-    (
-        {
-            "h1": {
-                "color": "yellow",
-            },
-            "body": {
-                "background-color": "black",
-                "color": "white",
-            },
-        },
-        [
-            ("h1", "color", "#CC00FF"),
-            ("body", "background-color", "#696969"),
-        ],
-        {
-            "h1": {
-                "color": "#CC00FF",
-            },
-            "body": {
-                "background-color": "#696969",
-                "color": "white",
-            },
-        },
-    ),
+    (12, "txt", 12),
+    (16, "md", 32),
 ]
-
 
 submit_cases = run_cases + [
-    (
-        {},
-        [
-            ("p", "font-size", "16px"),
-        ],
-        {
-            "p": {
-                "font-size": "16px",
-            },
-        },
-    ),
-    (
-        {
-            ".container": {
-                "max-width": "1200px",
-                "margin": "0 auto",
-                "padding": "0 20px",
-            },
-        },
-        [
-            (".container", "max-width", "1450px"),
-            (".container", "color", "#660099"),
-        ],
-        {
-            ".container": {
-                "max-width": "1450px",
-                "margin": "0 auto",
-                "padding": "0 20px",
-                "color": "#660099",
-            },
-        },
-    ),
+    (14, "html", "invalid doc type"),
+    (0, "txt", 0),
+    (50, "md", 100),
 ]
 
 
-def test(initial_styles, styles_to_add, expected_output):
+def test(input1, input2, expected_output):
     print("---------------------------------")
-    print(f"Initial styles: {initial_styles}")
-    initial_styles_copy = copy.deepcopy(initial_styles)
-    add_style = css_styles(initial_styles)
-    result = initial_styles.copy()
-    for style in styles_to_add:
-        print(f"Style to add: {style}")
-        result = add_style(*style)
+    print(f"Inputs:")
+    print(f" * font_size: {input1}")
+    print(f" * doc_type: {input2}")
     print(f"Expected: {expected_output}")
+    try:
+        result = converted_font_size(input1)(input2)
+    except Exception as error:
+        result = str(error)
     print(f"Actual:   {result}")
-    if initial_styles_copy != initial_styles:
-        print("Fail: You should not modify the initial styles")
-        return False
-    if result != expected_output:
-        print("Fail: Unexpected result")
-        return False
-    print("Pass")
-    return True
+    if result == expected_output:
+        print("Pass")
+        return True
+    print("Fail")
+    return False
 
 
 def main():

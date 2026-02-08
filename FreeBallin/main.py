@@ -1,15 +1,12 @@
-import copy
+def converted_font_size(font_size):
+    def new_function(doc_type):
 
-def css_styles(initial_styles):
-    new = copy.deepcopy(initial_styles)
-
-    def add_style(selector, property, value):
-        if selector not in new:
-            new[selector] = {}
-        
-        new[selector][property]= value
-        return new
-        
-    return add_style
-
-
+            if doc_type == "txt":
+                return font_size
+            if doc_type == "md":
+                return font_size * 2
+            if doc_type == "docx":
+                return font_size * 3
+            raise ValueError("invalid doc type")
+    return new_function
+    
