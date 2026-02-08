@@ -1,12 +1,14 @@
-def converted_font_size(font_size):
-    def new_function(doc_type):
+def lines_with_sequence(char):
+    def with_char(length):
+        sequence = char * length
 
-            if doc_type == "txt":
-                return font_size
-            if doc_type == "md":
-                return font_size * 2
-            if doc_type == "docx":
-                return font_size * 3
-            raise ValueError("invalid doc type")
-    return new_function
-    
+        def with_lenght(doc):
+            count = 0
+            split = doc.split("\n")
+            for lines in split:
+                if lines.__contains__(sequence):
+                    count += 1
+            return count
+        return with_lenght
+
+    return with_char
