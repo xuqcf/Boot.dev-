@@ -1,7 +1,8 @@
 def markdown_to_text_decorator(func):
     def wrapper(*args, **kwargs):
         new = list(map(convert_md_to_txt, args))
-        new_k = dict(lambda item: (item[0], convert_md_to_txt(item[1])), kwargs.items())
+        new_k = dict(map(lambda item: (item[0], convert_md_to_txt(item[1])), kwargs.items()))
+
         return func(*new, **new_k)
     return wrapper
 
