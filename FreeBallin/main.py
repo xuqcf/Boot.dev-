@@ -1,20 +1,11 @@
-def file_type_aggregator(func_to_decorate):
-    # dict of file_type -> count
-    counts = {}
+def args_logger(*args, **kwargs):
+    for i, arg in enumerate(args, start=1):
+        print(f"{i}. {arg}")
 
-    def wrapper(doc, file_type):
-        if file_type not in counts:
-            counts[file_type] = 0
-        counts[file_type] += 1
-        result = func_to_decorate(doc, file_type)
+    k_tuple = kwargs.items()
+    k_sorted = sorted(k_tuple)
 
-        return result, counts
+    for key, value in k_sorted:
+        print(f"* {key}: {value}")
 
-    return wrapper
-
-
-# don't touch above this line
-
-@file_type_aggregator
-def process_doc(doc, file_type):
-    return f"Processing doc: '{doc}'. File Type: {file_type}"
+    return args_logger
