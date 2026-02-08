@@ -1,15 +1,15 @@
-def create_markdown_image(alt_text):
-
-    def inner(url):
-
-        url = url.replace("(", "%28")
-        url = url.replace(")", "%29")
-        base = f"![{alt_text}]({url})"
-
-        def inner_most(title=None):
-            if title:
-                return base[:-1] + f' "{title}" )'
-            return base
-        return inner_most
-    return inner
-    
+def create_pipeline(step_one):
+    def with_step_two(step_two): #first function, returns step two
+        def with_option(option=None): #inner function, returns option
+            def inner_most(text): #inner most function (main logic)
+                if option == "--one":
+                    return step_one(text)
+                elif option == "--two":
+                    return step_two(text)
+                elif option == "--both" or option is None:
+                    return step_two(step_one(text))
+                else:
+                    raise Exception("invalid option")
+            return inner_most
+        return with_option
+    return with_step_two 
