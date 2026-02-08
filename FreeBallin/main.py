@@ -1,15 +1,12 @@
-def create_pipeline(step_one):
-    def with_step_two(step_two): #first function, returns step two
-        def with_option(option=None): #inner function, returns option
-            def inner_most(text): #inner most function (main logic)
-                if option == "--one":
-                    return step_one(text)
-                elif option == "--two":
-                    return step_two(text)
-                elif option == "--both" or option is None:
-                    return step_two(step_one(text))
-                else:
-                    raise Exception("invalid option")
-            return inner_most
-        return with_option
-    return with_step_two 
+def new_resizer(max_width, max_height):
+    def inner(min_width=0, min_height=0): 
+        if min_width > max_width or min_height > max_height:
+            raise Exception("minimum size cannot exceed maximum size")
+        
+        def innermost(width, height):
+            width = max(min_width, min(width, max_width)) # min(width, max_width) if width is above max_width, use max_width, otherwise keep width || max(min_width, result), if width is too small, use min_width otherwise keep result
+            height = max(min_height, min(height, max_height))
+            return width, height
+        
+        return innermost
+    return inner
