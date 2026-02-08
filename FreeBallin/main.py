@@ -1,11 +1,11 @@
-def args_logger(*args, **kwargs):
-    for i, arg in enumerate(args, start=1):
-        print(f"{i}. {arg}")
+def configure_plugin_decorator(func):
 
-    k_tuple = kwargs.items()
-    k_sorted = sorted(k_tuple)
+    def wrapper(*args):
+        co = dict(args)
+        return func(**co)
 
-    for key, value in k_sorted:
-        print(f"* {key}: {value}")
+        
+    return wrapper
+    
 
-    return args_logger
+
