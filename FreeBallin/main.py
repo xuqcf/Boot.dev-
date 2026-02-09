@@ -1,6 +1,15 @@
-from functools import lru_cache
+def replacer(old, new):
+    def replace(decorated_func):
+        def wrapper(text):
+          new_text = text.replace(old, new)
+          return decorated_func(new_text)
+        return wrapper
+    return replace
 
-
-@lru_cache()
-def is_palindrome(word):
-    return word == word[::-1]
+@replacer("&","&amp;")
+@replacer("<","&lt;")
+@replacer(">","&gt;")
+@replacer('"',"&quot;")
+@replacer('"',"&#x27;")
+def tag_pre(text):
+    return f"<pre>{text}</pre>"
