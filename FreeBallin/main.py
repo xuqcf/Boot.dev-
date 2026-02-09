@@ -1,15 +1,20 @@
-def replacer(old, new):
-    def replace(decorated_func):
-        def wrapper(text):
-          new_text = text.replace(old, new)
-          return decorated_func(new_text)
-        return wrapper
-    return replace
+class MaybeParsed:
+    pass
 
-@replacer("&","&amp;")
-@replacer("<","&lt;")
-@replacer(">","&gt;")
-@replacer('"',"&quot;")
-@replacer('"',"&#x27;")
-def tag_pre(text):
-    return f"<pre>{text}</pre>"
+
+# don't touch above this line
+
+
+class Parsed(MaybeParsed):
+    def __init__(self, doc_name, text):
+        self.doc_name = doc_name
+        self.text = text
+
+
+
+
+
+class ParseError(MaybeParsed):
+    def __init__(self, doc_name, err):
+        self.doc_name = doc_name
+        self.err = err
