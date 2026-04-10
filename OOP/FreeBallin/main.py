@@ -4,32 +4,33 @@ CSVExportStatus = Enum(
     "CSVExportStatus", ["PENDING", "PROCESSING", "SUCCESS", "FAILURE"]
 )
 
-
 def get_csv_status(status, data):
     def pending(data):
         converted = list(
             map(
-                lambda row: list(map(str, row)),
+                lambda row: list(map(str, row)), 
                 data
             )
         )
+        
         return converted
     
+
     def processing(data):
         rows = list(
             map(
                 lambda row: ",".join(row),
                 data
-            )
+            ) 
         )
+        
 
         table = "\n".join(rows)
-
         return table
     
     match status:
         case CSVExportStatus.PENDING:
-            return ("Pending...", pending(data))
+            return ("Pending...", pending(data)) ## make sure to call the function while returning
         
         case CSVExportStatus.PROCESSING:
             return ("Processing...", processing(data))
