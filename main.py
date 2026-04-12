@@ -1,20 +1,14 @@
-class Influencer:
-    def __init__(self, num_selfies, num_bio_links):
-        self.num_selfies = num_selfies
-        self.num_bio_links = num_bio_links
+def bubble_sort(nums):
+    swapping = True
 
-    def __repr__(self):
-        return f"({self.num_selfies}, {self.num_bio_links})"
+    end = len(nums)
 
+    while swapping:
+        swapping = False
+        for i in range(1, end):
+            if nums[i - 1] > nums[i]:
+                nums[ i -1 ], nums[i] = nums[i], nums[ i - 1]
+                swapping = True
+        end -= 1
+    return nums
 
-# dont touch above this line
-
-
-def vanity(influencer):
-    total = (influencer.num_bio_links * 5) + influencer.num_selfies
-    return total
-
-
-def vanity_sort(influencers):
-    sorted_influencers = sorted(influencers, key=vanity)
-    return sorted_influencers
